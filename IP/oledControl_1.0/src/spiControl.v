@@ -23,21 +23,17 @@ reg CE;
 
 assign spi_clock = (CE == 1) ? clock_10 : 1'b1;
 
+initial
+    clock_10 <= 0;
+    
 always @(posedge clock)
 begin
     if(counter != 4)
         counter <= counter + 1;
-    else
-        counter <= 0;
-end
-
-initial
-    clock_10 <= 0;
-
-always @(posedge clock)
-begin
-    if(counter == 4)
+    else if (counter ==4) begin
         clock_10 <= ~clock_10;
+        counter <= 0;
+    end
 end
 
 localparam IDLE = 'd0,
@@ -72,9 +68,9 @@ begin
                 if(dataCount != 7)
                     dataCount <= dataCount + 1;
                 else
-                begin
-                    state <= DONE;
-                end
+                    begin
+                        state <= DONE;
+                    end
             end
             DONE:begin
                 CE <= 0;
