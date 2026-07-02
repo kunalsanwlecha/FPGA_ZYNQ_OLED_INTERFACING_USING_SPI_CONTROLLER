@@ -102,7 +102,7 @@ begin
                 begin
                     spiLoadData <= 1'b0;
                     oled_reset_n <= 1'b0;
-                    state <= DELAY;
+                    state <= DELAY; //because we are sending spiLoadData=0 at 100 mhz clock and spiControl will se this according to 10 mhz clock,so it need to wait
                     nextState <= RESET;
                 end
             end
@@ -121,7 +121,7 @@ begin
                     nextState <= CHRG_PUMP1;
                 end
             end
-            WAIT_SPI:begin
+            WAIT_SPI:begin //because 
                 if(!spiDone)
                 begin
                     state <= nextState;
